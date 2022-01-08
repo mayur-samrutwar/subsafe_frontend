@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import axios from "axios";
 function Login(props) {
 
 const [user, setUser] = useState({
