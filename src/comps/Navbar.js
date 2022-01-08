@@ -75,7 +75,7 @@ export default function Navbar()  {
         <ul class="flex items-center hidden space-x-8 lg:flex">
           <li>
             <a
-              href="/auth"
+              href="/login"
               authType="sign-in"
               aria-label="Sign in"
               title="Sign in"
@@ -86,7 +86,7 @@ export default function Navbar()  {
           </li>
           <li>
             <a
-              href="/auth"
+              href="/signup"
               authType="sign-up"
               class="inline-flex items-center justify-center h-12 px-6 font-medium tracking-wide text-white transition duration-200 rounded shadow-md bg-rose-400 hover:bg-rose-700 focus:shadow-outline focus:outline-none"
               aria-label="Sign up"
@@ -209,7 +209,7 @@ export default function Navbar()  {
                     </li>
                     <li>
                       <a
-                        href="/auth"
+                        href="/login"
                         authType="sign-in"
                         aria-label="Sign in"
                         title="Sign in"
@@ -220,7 +220,7 @@ export default function Navbar()  {
                     </li>
                     <li>
                       <a
-                        href="/auth"
+                        href="/signup"
                         authType="sign-up"
                         class="inline-flex items-center justify-center w-full h-12 px-6 font-medium tracking-wide text-white transition duration-200 rounded shadow-md bg-deep-rose-500 hover:bg-deep-rose-700 focus:shadow-outline focus:outline-none"
                         aria-label="Sign up"
