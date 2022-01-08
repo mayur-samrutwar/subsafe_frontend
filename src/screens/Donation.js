@@ -188,13 +188,12 @@ function Donation(props) {
                           }
                         )
                         .then(async(res) => {
-                          await new Promise((r) => setTimeout(r, 40000));
+                          await new Promise((r) => setTimeout(r, 30000));
                           console.log(res);
                           const nft_id = res.data.nft_ids[0];
                           console.log(nft_id);
                            await axios.get(
-                             "https://api.onec.in/api/v1/naas/fetchTokenId/",
-                             {nft_id},
+                             `https://api.onec.in/api/v1/naas/fetchTokenId/${nft_id}`,
                              {
                                headers: {
                                  "NAAS-APIKEY":
@@ -206,8 +205,7 @@ function Donation(props) {
                         .then(async (res) => {
                           const token_id = res.data.token_id;
                           await axios.get(
-                            "https://api.onec.in/api/v1/naas/getTokenMetadataHash/",
-                            {token_id},
+                            `https://api.onec.in/api/v1/naas/getTokenMetadataHash/${token_id}`,
                             {
                               headers: {
                                 "NAAS-APIKEY":
