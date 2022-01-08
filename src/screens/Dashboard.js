@@ -1,6 +1,25 @@
+import React,{ useState } from 'react';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+
 function Dashboard(props) {
+
+
+  const [isNewUser, setisNewUser] = useState(true);
+
+
+  const submitHandler = (e)=>{
+    e.preventDefault();
+    setisNewUser(false);
+    toast.success("Data Analyzed Successfully", {
+      position: toast.POSITION.TOP_LEFT,
+    });
+  }
+
     return (
       <div className="flex w-full min-h-screen bg-gray-50">
+        <ToastContainer />
         {/* left part */}
         <div className="w-1/6 bg-rose-400 m-4 rounded-xl shadow-lg flex flex-col items-center justify-center space-y-8">
           <svg
@@ -54,10 +73,47 @@ function Dashboard(props) {
             </div>
           </div>
           {/* dashboard main */}
-          <div className="w-full bg-white rounded-xl h-full mt-4 shadow-lg p-8 flex flex-wrap">
-            <div className="h-20 w-40 rounded-xl bg-white drop-shadow-md">
-              md
-            </div>
+          <div className="w-full bg-white rounded-xl h-full mt-4 shadow-lg p-8 flex flex-wrap justify-center items-center">
+            {/* <div className=" flex">
+              <div className="h-20 w-40 rounded-xl bg-white drop-shadow-md flex mr-8">
+                md
+              </div>
+              <div className="h-20 w-40 rounded-xl bg-white drop-shadow-md flex mr-8">
+                md
+              </div>
+              <div className="h-20 w-40 rounded-xl bg-white drop-shadow-md flex mr-8">
+                md
+              </div>
+            </div> */}
+
+            {isNewUser && (
+              <div className="w-96 rounded-xl bg-white drop-shadow-md flex justify-center items-center">
+                <form className="flex flex-col rounded-xl my-8">
+                  <label className="text-black mt-2">Select Your Bank:</label>
+                  <select className="px-3 py-2 border-2 border-black rounded-xl mt-2">
+                    <option value="hdfc">HDFC Bank</option>
+                    <option value="icici">ICICI Bank</option>
+                    <option value="sbi">State Bank of India</option>
+                    <option value="boi">Bank of India</option>
+                  </select>
+                  <label className="text-black mt-2">
+                    Enter Account Number:
+                  </label>
+                  <input
+                    type="number"
+                    name="userAcc"
+                    className="rounded-xl px-3 py-2 mt-2 border-2 border-black"
+                    placeholder="123456"
+                  ></input>
+                  <button
+                    className="px-3 py-2 bg-black rounded-xl text-white mt-4"
+                    onClick={submitHandler}
+                  >
+                    Analyze My Data
+                  </button>
+                </form>
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -1,9 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { ToastContainer, toast } from "react-toastify";
+import OrgInfo from "../comps/OrgInfo";
+import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 
 function Donation(props) {
+
     const [formDisplay, setFormDisplay] = useState(false);
+    const [orgDisplay, setOrgDisplay] = useState(false);
+
+    const submitHandler = async (e)=>{
+      e.preventDefault();
+      setTimeout(1000);
+      setFormDisplay(false);
+      await axios.post
+      toast.success("Request Sent Successfully!", {
+        position: toast.POSITION.TOP_LEFT,
+      });
+    }
+
+    const showOrgData = (org)=>{
+
+    }
+    
+
   return (
     <div className="relative">
+      <ToastContainer
+        position="top-left"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <div className="flex w-full min-h-screen bg-gray-50">
         {/* left part */}
         <div className="w-1/6 bg-rose-400 m-4 rounded-xl shadow-lg flex flex-col text-5xl font-extrabold text-white justify-center items-center space-y-2">
@@ -39,7 +72,10 @@ function Donation(props) {
                 is a hackathon to bring excellent coders together. Please donate
                 to us.
               </div>
-              <button className="bg-rose-400 px-6 py-2 text-white font-thin rounded-xl">
+              <button
+                className="bg-rose-400 px-6 py-2 text-white font-thin rounded-xl"
+                onClick={showOrgData}
+              >
                 Know more
               </button>
             </div>
@@ -119,13 +155,18 @@ function Donation(props) {
                 className="rounded-xl px-3 py-2 mt-2"
                 placeholder="https://www.instagram.com/mayur.io"
               ></input>
-              <button className="px-3 py-2 bg-white rounded-xl text-rose-400 mt-4">
+              <button
+                className="px-3 py-2 bg-white rounded-xl text-rose-400 mt-4"
+                onClick={submitHandler}
+              >
                 Submit Request
               </button>
             </form>
           </div>
         </div>
       )}
+
+      {/* <OrgInfo /> */}
     </div>
   );
 }
