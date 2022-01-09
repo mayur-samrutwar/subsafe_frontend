@@ -2,12 +2,15 @@ import React, { useState } from 'react';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
+import confetti from "canvas-confetti";
 
 function Donation(props) {
 
     const [formDisplay, setFormDisplay] = useState(false);
     const [orgDisplay, setOrgDisplay] = useState(null);
     const [userAdrs, setUserAdrs] = useState("");
+    const [isMember, setIsMember] = useState(false);
+    const [hash, setHash] = useState("");
 
     const submitHandler = async (e)=>{
       e.preventDefault();
@@ -175,7 +178,9 @@ function Donation(props) {
                                 public_address: userAdrs,
                                 metadata: {
                                   NGO: orgDisplay.orgName,
-                                  adrs: userAdrs
+                                  adrs: userAdrs,
+                                  status: 200,
+                                  member: true,
                                 },
                               },
                             ],
@@ -187,24 +192,25 @@ function Donation(props) {
                             },
                           }
                         )
-                        .then(async(res) => {
-                          await new Promise((r) => setTimeout(r, 30000));
+                        .then(async (res) => {
+                          await new Promise((r) => setTimeout(r, 60000));
                           console.log(res);
                           const nft_id = res.data.nft_ids[0];
                           console.log(nft_id);
-                           await axios.get(
-                             `https://api.onec.in/api/v1/naas/fetchTokenId/${nft_id}`,
-                             {
-                               headers: {
-                                 "NAAS-APIKEY":
-                                   "7dc60b23-869a-49c1-8632-476146f09ddc",
-                               },
-                             }
-                           );
+                          return await axios.get(
+                            `https://api.onec.in/api/v1/naas/fetchTokenId/${nft_id}`,
+                            {
+                              headers: {
+                                "NAAS-APIKEY":
+                                  "7dc60b23-869a-49c1-8632-476146f09ddc",
+                              },
+                            }
+                          );
                         })
                         .then(async (res) => {
+                          console.log(res);
                           const token_id = res.data.token_id;
-                          await axios.get(
+                          return await axios.get(
                             `https://api.onec.in/api/v1/naas/getTokenMetadataHash/${token_id}`,
                             {
                               headers: {
@@ -214,14 +220,83 @@ function Donation(props) {
                             }
                           );
                         })
-                        .then(async(res)=>{
-                          console.log(res)
-                        })
+                        .then(async (res) => {
+                          const hash = res.data.hash;
+                          const nftURL = `https://ipfs.io/ipfs/${hash}`;
+                          console.log(nftURL);
+                          setHash(nftURL);
+                          setIsMember(true);
+                          console.log(res);
+                          var duration = 5 * 1000;
+                          var animationEnd = Date.now() + duration;
+                          var defaults = {
+                            startVelocity: 30,
+                            spread: 360,
+                            ticks: 60,
+                            zIndex: 0,
+                          };
+
+                          function randomInRange(min, max) {
+                            return Math.random() * (max - min) + min;
+                          }
+
+                          var interval = setInterval(function () {
+                            var timeLeft = animationEnd - Date.now();
+
+                            if (timeLeft <= 0) {
+                              return clearInterval(interval);
+                            }
+
+                            var particleCount = 50 * (timeLeft / duration);
+                            
+                            confetti(
+                              Object.assign({}, defaults, {
+                                particleCount,
+                                origin: {
+                                  x: randomInRange(0.1, 0.3),
+                                  y: Math.random() - 0.2,
+                                },
+                              })
+                            );
+                            confetti(
+                              Object.assign({}, defaults, {
+                                particleCount,
+                                origin: {
+                                  x: randomInRange(0.7, 0.9),
+                                  y: Math.random() - 0.2,
+                                },
+                              })
+                            );
+                          }, 250);
+                        });
                     }}
                   >
                     {" "}
                     Be a Member
                   </button>
+                </div>
+              </div>
+            )}
+
+            {isMember && (
+              <div className="absolute left-56 border border-black w-3/5 bg-white p-8 flex flex-col items-center">
+                <button
+                  className="text-rose-400 underline"
+                  onClick={() => {setIsMember(false);setOrgDisplay(null)}}
+                >
+                  Close
+                </button>
+                <div className="flex flex-col items-center mt-6 px-24">
+                  <div className="text-2xl font-bold my-2">
+                    Congratulations!!
+                  </div>
+                  <div className="">
+                   You are now the member of {orgDisplay.orgName || null}.
+                  </div>
+                  <a href={hash} className="px-4 py-2 text-white bg-rose-400 mt-2">
+                    {" "}
+                    View My Membership NFT
+                  </a>
                 </div>
               </div>
             )}
