@@ -13,6 +13,7 @@ export default function Dashboard(props) {
   const [isModal, setisModal] = useState(null);
   const [isCancelModal, setIsCancelModal] = useState(false);
   const [isTransaction, setisTransaction] = useState(false);
+  const[money, setMoney] = useState(0);
 
 
 const cancelSubHandler = ()=>{
@@ -43,6 +44,9 @@ const cancelled=(v)=>{
      // eslint-disable-next-line no-unused-expressions
      console.log(vendors);
    }
+   
+   setMoney(money+isModal[1][1]);
+   console.log(isModal)
 
 var duration = 5 * 1000;
 var animationEnd = Date.now() + duration;
@@ -199,6 +203,11 @@ const transactionDetails = [
           {/* notification area */}
           <div className="w-full bg-white rounded-xl h-20 shadow-lg flex justify-between items-center">
             <h1 className="ml-8 text-md">Mayur Samrutwar</h1>
+            <button
+                    className="px-3 py-2 bg-rose-400 text-white"
+                  >
+                    Total Saving: Rs {money}
+                  </button>
             <div className="mr-8 bg-gray-100 m-2 flex justify-center items-center h-12 w-12 rounded-full">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -336,6 +345,7 @@ const transactionDetails = [
               </div>
             )}
 
+
             {isTransaction && (
               <div className="absolute left-56 border border-black w-3/5 bg-white p-8 flex flex-col items-center">
                 <button
@@ -346,26 +356,31 @@ const transactionDetails = [
                 </button>
                 <div className="flex flex-wrap mt-6 space-y-2">
                   {transactionDetails.map((data, index) => {
-                      return (
-                        <div
-                          key={index}
-                          className="p-4 mr-8 mt-4 bg-white drop-shadow-md flex flex-wrap items-center"
-                        >
-                          <div className="mr-4">
-                            Transaction ID:
-                            <span className="underline">
-                              {data.transactionID}
-                            </span>
-                          </div>
-                          <div className="">
-                            Transaction Amount:{" "}
-                            <span className="underline">
-                              Rs.{data.transactionAmount}
-                            </span>
-                          </div>
-                          <button className="bg-rose-400 ml-4 px-3 py-2 text-white rounded-xl" onClick={()=>addSub(data.transactionID.slice(0, 5))}>Subscription</button>
+                    return (
+                      <div
+                        key={index}
+                        className="p-4 mr-8 mt-4 bg-white drop-shadow-md flex flex-wrap items-center"
+                      >
+                        <div className="mr-4">
+                          Transaction ID:
+                          <span className="underline">
+                            {data.transactionID}
+                          </span>
                         </div>
-                      );
+                        <div className="">
+                          Transaction Amount:{" "}
+                          <span className="underline">
+                            Rs.{data.transactionAmount}
+                          </span>
+                        </div>
+                        <button
+                          className="bg-rose-400 ml-4 px-3 py-2 text-white rounded-xl"
+                          onClick={() => addSub(data.transactionID.slice(0, 5))}
+                        >
+                          Subscription
+                        </button>
+                      </div>
+                    );
                   })}
                 </div>
               </div>
