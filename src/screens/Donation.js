@@ -4,7 +4,12 @@ import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import confetti from "canvas-confetti";
 
+
 function Donation(props) {
+
+
+    const NAASAPIKEY = "1353772a-a835-4983-bfe3-7a30894e76f3";
+
 
     const [formDisplay, setFormDisplay] = useState(false);
     const [orgDisplay, setOrgDisplay] = useState(null);
@@ -177,9 +182,9 @@ function Donation(props) {
                               {
                                 public_address: userAdrs,
                                 metadata: {
-                                  NGO: orgDisplay.orgName,
-                                  adrs: userAdrs,
                                   status: 200,
+                                  organization: orgDisplay.orgName,
+                                  user_address: userAdrs,
                                   member: true,
                                 },
                               },
@@ -187,13 +192,12 @@ function Donation(props) {
                           },
                           {
                             headers: {
-                              "NAAS-APIKEY":
-                                "7dc60b23-869a-49c1-8632-476146f09ddc",
+                              "NAAS-APIKEY": NAASAPIKEY,
                             },
                           }
                         )
                         .then(async (res) => {
-                          await new Promise((r) => setTimeout(r, 60000));
+                          await new Promise((r) => setTimeout(r, 25000));
                           console.log(res);
                           const nft_id = res.data.nft_ids[0];
                           console.log(nft_id);
@@ -201,8 +205,7 @@ function Donation(props) {
                             `https://api.onec.in/api/v1/naas/fetchTokenId/${nft_id}`,
                             {
                               headers: {
-                                "NAAS-APIKEY":
-                                  "7dc60b23-869a-49c1-8632-476146f09ddc",
+                                "NAAS-APIKEY": NAASAPIKEY,
                               },
                             }
                           );
@@ -214,8 +217,7 @@ function Donation(props) {
                             `https://api.onec.in/api/v1/naas/getTokenMetadataHash/${token_id}`,
                             {
                               headers: {
-                                "NAAS-APIKEY":
-                                  "7dc60b23-869a-49c1-8632-476146f09ddc",
+                                "NAAS-APIKEY": NAASAPIKEY,
                               },
                             }
                           );
@@ -248,7 +250,7 @@ function Donation(props) {
                             }
 
                             var particleCount = 50 * (timeLeft / duration);
-                            
+
                             confetti(
                               Object.assign({}, defaults, {
                                 particleCount,
